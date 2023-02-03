@@ -33,15 +33,23 @@ h1 {
 } 
 .display {
     display: flex;
-    min-width: 255px;
-    max-width: 300px;
+    max-width: 325px;
     flex-direction: column;
     background-color: white;
-    text-align: end;
-    padding: 15px;
     min-height: 70px;
-    box-shadow: #a3a1a1 0 5px 5px;
+    border: #6e6e6e 1px dotted;
+    margin: 10px;
+    align-items: center;
+    justify-content: space-between;
+}
 
+.display-expression, .display-result {
+    display: flex;
+    text-align: right;
+    justify-content: right;
+    padding: 5px;
+    min-width: 275px;
+    max-width: 325px;
 }
 
 .keyboard {
