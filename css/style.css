@@ -36,7 +36,7 @@ h1 {
     display: flex;
     flex: content;
     flex-wrap: wrap;
-    min-width: 275px;
+    width: 285px;
     height: f-content;
     flex-direction: column;
     background-color: white;
@@ -54,11 +54,11 @@ h1 {
     height: fit-content;
     flex-wrap: wrap;
     text-align: right;
-    justify-content: right;
+    justify-content: flex-end;
     padding: 5px;
-    min-width: 275px;
-    order: -1
-    /* max-width: 325px; */
+    width: 275px;
+    order: -1;
+    max-width: 325px;
 }
 
 .display-result {

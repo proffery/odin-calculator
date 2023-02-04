@@ -33,10 +33,17 @@ function displayInput(e) {
         plus(displayExpression);
     }
 
+    else if(e.target.id === '*') {
+        multiply(displayExpression);
+    }
+
+    else if(e.target.id === '/') {
+        division(displayExpression);
+    }
+
     else {
         expression = expression.concat(e.target.id);
         displayExpression.textContent = expression;
-        console.log(expression); 
     }
     
 }
@@ -50,12 +57,7 @@ function clean(displayExp, displayRes) {
 
 function remove(displayExp) {
     expression = expression.substring(0, expression.length - 1);
-    // if (expression === '') {
-    //     displayExp.textContent = '0';
-    // }
-    // else {
-        displayExp.textContent = expression;
-    //}
+    displayExp.textContent = expression;
 }
 
 function plusMinus(displayRes) {
@@ -70,8 +72,19 @@ function minus(displayExp) {
 }
 
 function plus(displayExp) {
-    
     expression = expression.concat('+');
+    cleanExpressionEnter();
+    displayExp.textContent = expression;
+}
+
+function multiply(displayExp) {
+    expression = expression.concat('*');
+    cleanExpressionEnter();
+    displayExp.textContent = expression;
+}
+
+function division(displayExp) {
+    expression = expression.concat('/');
     cleanExpressionEnter();
     displayExp.textContent = expression;
 }
@@ -79,7 +92,6 @@ function plus(displayExp) {
 function cleanExpressionEnter() {
     if (expression.charAt(0) === '-' && expression.charAt(1) === '-') {
         expression = expression.replace('-', '');
-        // expression = expression.replace('-', '');
     }
 
     if (expression.charAt(0) === '-' && expression.charAt(1) === '+') {
@@ -91,23 +103,41 @@ function cleanExpressionEnter() {
         expression = expression.replace('+', '');
     }
 
-
-    for (let i = 1; i < expression.length; i++) {
-        if (expression.charAt(i) === '-' && expression.charAt(i - 1) === '-') {
-            // expression = expression.substring(i - 1, i);
-            expression = expression.replaceAll('--', '-');
-        }
-        if (expression.charAt(i) === '+' && expression.charAt(i - 1) === '-') {
-            // expression = expression.substring(i - 1, i);
-            expression =  expression.replaceAll('+-', '-'); 
-        }
-        if (expression.charAt(i) === '-' && expression.charAt(i - 1) === '+') {
-            expression = expression.replaceAll('-+', '+');
-        }
-        if (expression.charAt(i) === '+' && expression.charAt(i - 1) === '+') {
-            expression = expression.replaceAll('++', '+');
-        }
+    if (expression.charAt(0) === '*') {
+        expression = expression.replace('*', '');
     }
+
+    if (expression.charAt(0) === '-' && expression.charAt(1) === '*') {
+        expression = expression.replace('*', '');
+        expression = expression.replace('-', '');
+    }
+    if (expression.charAt(0) === '/') {
+        expression = expression.replace('/', '');
+    }
+
+    if (expression.charAt(0) === '-' && expression.charAt(1) === '/') {
+        expression = expression.replace('/', '');
+        expression = expression.replace('-', '');
+    }
+    // for (let i = 0; i < expression.length; i++) {
+    //     if (expression.charAt(i) === '-' && expression.charAt(i - 1) === '-') {
+    //         expression = expression.replaceAll('--', '-');
+    //     }
+    //     if (expression.charAt(i) === '+' && expression.charAt(i - 1) === '-') {
+    //         expression =  expression.replaceAll('+-', '-'); 
+    //     }
+    //     if (expression.charAt(i) === '-' && expression.charAt(i - 1) === '+') {
+    //         expression = expression.replaceAll('-+', '+');
+    //     }
+    //     if (expression.charAt(i) === '+' && expression.charAt(i - 1) === '+') {
+    //         expression = expression.replaceAll('++', '+');
+    //     }
+
+    //     if (expression.charAt(i) === '*' && expression.charAt(i - 1) === '*') {
+    //         expression = expression.replaceAll('**', '*');
+    //     }
+
+    // }
 }
 
 function removeAllTransition(e) {
