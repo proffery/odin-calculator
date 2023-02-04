@@ -1,7 +1,7 @@
 const keyboard = ['CE', '<-', '/', '*', '-', '7', '8', '9', '+', '4', '5', '6', '.', '1', '2', '3', '+/-', '0', '='];
 const keysContainer = document.querySelector('.keyboard');
 let expression = '';
-let result = '';
+let result = 0;
 
 function drawKeyboard() {
     keysContainer.innerHTML = keyboard.map((key) => `<div class="key" id="${key}">${key}</div>`).join('');
@@ -22,7 +22,15 @@ function displayInput(e) {
     }
 
     else if(e.target.id === '+/-') {
-        plusMinus(displayExpression);
+        plusMinus(displayResult);
+    }
+
+    else if(e.target.id === '-') {
+        minus(displayExpression);
+    }
+
+    else if(e.target.id === '+') {
+        plus(displayExpression);
     }
 
     else {
@@ -35,30 +43,70 @@ function displayInput(e) {
 
 function clean(displayExp, displayRes) {
     expression = '';
-    result = '';
-    displayExp.textContent = '0';
-    displayRes.textContent = '';
+    result = 0;
+    displayExp.textContent = expression;
+    displayRes.textContent = result;
 }
 
 function remove(displayExp) {
-    expression = expression.substr(0, expression.length - 1);
-    if (expression === '') {
-        displayExp.textContent = '0';
-    }
-    else {
+    expression = expression.substring(0, expression.length - 1);
+    // if (expression === '') {
+    //     displayExp.textContent = '0';
+    // }
+    // else {
         displayExp.textContent = expression;
-    }
+    //}
 }
 
-function plusMinus(displayExp) {
-    if (expression.charAt(0) === '-') {
+function plusMinus(displayRes) {
+    result = result * -1;
+    displayRes.textContent = result;
+}
+
+function minus(displayExp) {
+    expression = expression.concat('-');
+    cleanExpressionEnter();
+    displayExp.textContent = expression;
+}
+
+function plus(displayExp) {
+    
+    expression = expression.concat('+');
+    cleanExpressionEnter();
+    displayExp.textContent = expression;
+}
+
+function cleanExpressionEnter() {
+    if (expression.charAt(0) === '-' && expression.charAt(1) === '-') {
         expression = expression.replace('-', '');
-        displayExp.textContent = expression;
+        // expression = expression.replace('-', '');
     }
 
-    else {
-        expression = '-' + expression;
-        displayExp.textContent = expression;
+    if (expression.charAt(0) === '-' && expression.charAt(1) === '+') {
+        expression = expression.replace('+', '');
+        expression = expression.replace('-', '');
+    }
+
+    if (expression.charAt(0) === '+') {
+        expression = expression.replace('+', '');
+    }
+
+
+    for (let i = 1; i < expression.length; i++) {
+        if (expression.charAt(i) === '-' && expression.charAt(i - 1) === '-') {
+            // expression = expression.substring(i - 1, i);
+            expression = expression.replaceAll('--', '-');
+        }
+        if (expression.charAt(i) === '+' && expression.charAt(i - 1) === '-') {
+            // expression = expression.substring(i - 1, i);
+            expression =  expression.replaceAll('+-', '-'); 
+        }
+        if (expression.charAt(i) === '-' && expression.charAt(i - 1) === '+') {
+            expression = expression.replaceAll('-+', '+');
+        }
+        if (expression.charAt(i) === '+' && expression.charAt(i - 1) === '+') {
+            expression = expression.replaceAll('++', '+');
+        }
     }
 }
 
@@ -72,3 +120,14 @@ const keys = document.querySelectorAll('.key');
 keys.forEach(key => key.addEventListener('click', displayInput));
 keys.forEach(key => key.addEventListener('transitionend', removeAllTransition));
 
+// function plusMinus(displayRes) {
+//     if (result.charAt(0) === '-') {
+//         result = result.replace('-', '');
+//         displayRes.textContent = result;
+//     }
+
+//     else {
+//         result = '-' + result;
+//         displayRes.textContent = result;
+//     }
+// }
