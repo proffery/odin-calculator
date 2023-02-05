@@ -1,6 +1,6 @@
 const keyboard = ['CE', '<-', '/', '*', '-', '7', '8', '9', '+', '4', '5', '6', '.', '1', '2', '3', '+/-', '0', '='];
 const keysContainer = document.querySelector('.keyboard');
-const regex = /(\-)?(\d*)(\.?\d*)?/;
+const regex = /^(\-|\d)(\d*)(\.?\d*)?$/;
 const displayExpression = document.querySelector('.display-expression');
 const displayResult = document.querySelector('.display-result');
 let expression = '';
@@ -31,24 +31,23 @@ function displayInput(e) {
     }
 
     else if(e.target.id === '+') {
-        plus();
+        plus(e);
     }
 
     else if(e.target.id === '*') {
-        multiply();
+        multiply(e);
     }
 
     else if(e.target.id === '/') {
-        division();
+        division(e);
     }
 
     else if(e.target.id === '.') {
-        dot();
+        dot(e);
     }
 
     else {
         digitsInput(e);
-        cleanExpressionEnter();
     }
     
 }
@@ -56,7 +55,7 @@ function displayInput(e) {
 
 function digitsInput(e) {
     console.log(`digits input: ${e.target.id}`);
-    expression = expression.concat(e.target.id);
+    cleanExpressionEnter(e.target.id);
 }
 
 function clean() {
@@ -75,58 +74,46 @@ function remove() {
     console.log('remove:');
     console.log('expression before: '+expression);
     expression = expression.substring(0, expression.length - 1);
-    console.log('expression after: '+expression);
+    console.log('expression after: '+ expression);
     displayExpression.textContent = expression;
 }
 
 function plusMinus() {
     console.log('plusMinus:');
-    console.log('result before: '+result);
+    console.log('result before: '+ result);
     result = result * -1;
-    console.log('result after: '+result);
+    console.log('result after: '+ result);
     displayResult.textContent = result;
 }
 
 function minus(e) {
     console.log('minus:');
-    console.log('expression before: '+ expression);
-    expression = expression.concat(e.target.id);
-    console.log('expression after: '+ expression);
-    cleanExpressionEnter();
+    cleanExpressionEnter(e.target.id);
 }
 
-function plus() {
+function plus(e) {
     console.log('plus:');
-    console.log('expression before: '+ expression);
-    expression = expression.concat('+');
-    console.log('expression after: '+ expression);
-    cleanExpressionEnter();
+    cleanExpressionEnter(e.target.id);
 }
 
-function multiply() {
+function multiply(e) {
     console.log('multiply:');
-    console.log('expression before: '+ expression);
-    expression = expression.concat('*');
-    console.log('expression after: '+ expression);
-    cleanExpressionEnter();
+    cleanExpressionEnter(e.target.id);
 }
 
-function division() {
+function division(e) {
     console.log('division:');
-    console.log('expression before: '+ expression);
-    expression = expression.concat('/');
-    console.log('expression after: '+ expression);
-    cleanExpressionEnter();
+    cleanExpressionEnter(e.target.id);
 }
 
-function dot() {
+function dot(e) {
     console.log('dot:');
-    console.log('expression before: '+ expression);
-    expression = expression.concat('.');
-    console.log('expression after: '+ expression);
-    cleanExpressionEnter();
+    cleanExpressionEnter(e.target.id);
 }
-function cleanExpressionEnter() {
+function cleanExpressionEnter(id) {
+    console.log('expression before: '+ expression);
+    expression = expression.concat(id);
+    console.log('expression after: '+ expression);
     if (regex.test(expression)) {
         console.log(`cleanExpressionEnter ${regex.test(expression)}:`); 
         console.log('expression: '+ expression);
