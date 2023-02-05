@@ -51,7 +51,7 @@ function displayInput(e) {
     }
     else if(e.target.id === '=') {
         createDigitsArray(e.target.id);
-        calculate();
+        //calculate();
     }
     else {
         digitsInput(e);
@@ -91,12 +91,12 @@ function createOperationArray(id) {
 }
 
 function createDigitsArray(id) {
-    if (id === '=') {
-        let tempArr = [];
-        tempArr = expression.split(operationArray[operationArray.length - 1]);
-        console.log(tempArr);
-        digitsArray[digitsIter] = tempArr[tempArr.length - 1].substring(0, tempArr[tempArr.length - 1].length - 1);
-    }
+    // if (id === '=') {
+    //     let tempArr = [];
+    //     tempArr = expression.split(operationArray[operationArray.length - 1]);
+    //     console.log(tempArr);
+    //     digitsArray[digitsIter] = tempArr[tempArr.length - 1].substring(0, tempArr[tempArr.length - 1].length - 1);
+    // }
 
     if (digitsIter < 1) {
         console.log(digitsArray);
@@ -135,10 +135,6 @@ function createDigitsArray(id) {
             console.log(digitsArray);
         }
     }
-
-    // else {
-
-    // }
     console.log('iterDigits:'+ digitsIter);
     digitsIter++;
 }
