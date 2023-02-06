@@ -50,37 +50,36 @@ function displayInput(e) {
         dot(e);
     }
     else if(e.target.id === '=') {
-        // createOperationArray(e.target.id);
         createDigitsArray(e.target.id);
-        //calculate();
+        calculate();
     }
     else {
         digitsInput(e);
     }
-    calculate();
+    // calculate();
 }
 
 function calculate() {
-    // if (operationArray.length == 0 || digitsArray.length < 2) {
-    //     return;
-    // }
+    if (operationArray.length == 0 || digitsArray.length < 2) {
+        return;
+    }
 
-    // else {
-    //     for (let i = 0; i < digitsArray.length; i++) {
-    //         if (operationArray[i] === '-') {
-    //             result = digitsArray[i] - digitsArray[i + 1];
-    //         }
-    //         if (operationArray[i] === '+') {
-    //             result = digitsArray[i] + digitsArray[i + 1];
-    //         }
-    //         if (operationArray[i] === '*') {
-    //             result = digitsArray[i] * digitsArray[i + 1];
-    //         }
-    //         if (operationArray[i] === '/') {
-    //             result = digitsArray[i] / digitsArray[i + 1];
-    //         }  
-    //     }
-    // }
+    else {
+        for (let i = 0; i < digitsArray.length; i++) {
+            if (operationArray[i] === '-') {
+                result = parseFloat(digitsArray[i]) - parseFloat(digitsArray[i + 1]);
+            }
+            if (operationArray[i] === '+') {
+                result = parseFloat(digitsArray[i]) + parseFloat(digitsArray[i + 1]);
+            }
+            if (operationArray[i] === '*') {
+                result = parseFloat(digitsArray[i]) * parseFloat(digitsArray[i + 1]);
+            }
+            if (operationArray[i] === '/') {
+                result = parseFloat(digitsArray[i]) / parseFloat(digitsArray[i + 1]);
+            }  
+        }
+    }
     displayResult.textContent = result;
 }
 
@@ -143,8 +142,8 @@ function createDigitsArray(id) {
         if (digitsIter < 1) {
             console.log(digitsArray);
             console.log('iterDigits:'+ digitsIter);
-            // digitsIter++;
-            // return;
+            //digitsIter++;
+            //return;
         }
 
         else if (digitsIter == 1){
