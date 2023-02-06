@@ -50,6 +50,7 @@ function displayInput(e) {
         dot(e);
     }
     else if(e.target.id === '=') {
+        // createOperationArray(e.target.id);
         createDigitsArray(e.target.id);
         //calculate();
     }
@@ -60,82 +61,124 @@ function displayInput(e) {
 }
 
 function calculate() {
-    if (operationArray.length == 0 || digitsArray.length < 2) {
-        return;
-    }
+    // if (operationArray.length == 0 || digitsArray.length < 2) {
+    //     return;
+    // }
 
-    else {
-        for (let i = 0; i < digitsArray.length; i++) {
-            if (operationArray[i] === '-') {
-                result = digitsArray[i] - digitsArray[i + 1];
-            }
-            if (operationArray[i] === '+') {
-                result = digitsArray[i] + digitsArray[i + 1];
-            }
-            if (operationArray[i] === '*') {
-                result = digitsArray[i] * digitsArray[i + 1];
-            }
-            if (operationArray[i] === '/') {
-                result = digitsArray[i] / digitsArray[i + 1];
-            }  
-        }
-    }
+    // else {
+    //     for (let i = 0; i < digitsArray.length; i++) {
+    //         if (operationArray[i] === '-') {
+    //             result = digitsArray[i] - digitsArray[i + 1];
+    //         }
+    //         if (operationArray[i] === '+') {
+    //             result = digitsArray[i] + digitsArray[i + 1];
+    //         }
+    //         if (operationArray[i] === '*') {
+    //             result = digitsArray[i] * digitsArray[i + 1];
+    //         }
+    //         if (operationArray[i] === '/') {
+    //             result = digitsArray[i] / digitsArray[i + 1];
+    //         }  
+    //     }
+    // }
     displayResult.textContent = result;
 }
 
 function createOperationArray(id) {
     operationArray[opIter] = id;
     console.log(operationArray);
-    console.log('iterOper:'+ opIter);
     opIter++;
+    console.log('iterOper:'+ opIter);
 }
 
 function createDigitsArray(id) {
-    // if (id === '=') {
-    //     let tempArr = [];
-    //     tempArr = expression.split(operationArray[operationArray.length - 1]);
-    //     console.log(tempArr);
-    //     digitsArray[digitsIter] = tempArr[tempArr.length - 1].substring(0, tempArr[tempArr.length - 1].length - 1);
-    // }
-
-    if (digitsIter < 1) {
-        console.log(digitsArray);
-        console.log('iterDigits:'+ digitsIter);
-        digitsIter++;
-        return;
-    }
-
-    else if (digitsIter == 1){
-        if (operationArray[operationArray.length - 1] == operationArray[operationArray.length - 2]) {
-            digitsArray = expression.split(operationArray[operationArray.length - 1]);
-            digitsArray.pop();
+     if (id === '=') {
+        if (digitsIter == 0 && opIter == 0) {
             console.log(digitsArray);
+            digitsArray[digitsIter] = expression;
+            console.log(digitsArray);
+            console.log('iterOper=:'+ opIter);
+            console.log('iterDigits=:'+ digitsIter);
+
+        }
+        // if (opIter == 0 && digitsIter == 1) {
+        //     console.log(digitsArray);
+        //     digitsArray[digitsIter] = expression;
+        //     console.log(digitsArray);
+        // }
+
+        // if (opIter == 1 && digitsIter == 0) {
+        //     digitsArray = expression.split(operationArray[operationArray.length - 1]);
+        //     digitsArray.pop();
+        //     console.log(digitsArray); 
+        // }
+    
+        if (opIter == 1 && digitsIter == 1) {
+            digitsArray = expression.split(operationArray[operationArray.length - 1]);
+            // digitsArray.pop();
+            console.log(digitsArray);
+            console.log('iterOper=:'+ opIter);
+            console.log('iterDigits=:'+ digitsIter);
+
+        }
+
+        if (opIter == 1 && digitsIter == 2) {
+            digitsArray = expression.split(operationArray[operationArray.length - 1]);
+            // digitsArray.pop();
+            console.log(digitsArray);
+            console.log('iterOper=:'+ opIter);
+            console.log('iterDigits=:'+ digitsIter);
         }
         else {
-            digitsArray = expression.split(operationArray[operationArray.length - 2]);
-            digitsArray[digitsIter] = digitsArray[digitsIter].substring(0, digitsArray[digitsIter].length - 1);
-            console.log(digitsArray);
-        }
-    }
-
-    else {
-        if (operationArray[operationArray.length - 1] == operationArray[operationArray.length - 2]) {
             let tempArr = [];
             tempArr = expression.split(operationArray[operationArray.length - 1]);
-            tempArr.pop();
-            digitsArray[digitsIter] = tempArr[tempArr.length - 1];
             console.log(tempArr);
+            digitsArray[digitsIter] = tempArr[tempArr.length - 1];
             console.log(digitsArray);
         }
-        else {
-            let tempArr = [];
-            tempArr = expression.split(operationArray[operationArray.length - 2]);
-            console.log(tempArr);
-            digitsArray[digitsIter] = tempArr[tempArr.length - 1].substring(0, tempArr[tempArr.length - 1].length - 1);
+     }
+
+
+   else {
+        if (digitsIter < 1) {
             console.log(digitsArray);
+            console.log('iterDigits:'+ digitsIter);
+            // digitsIter++;
+            // return;
+        }
+
+        else if (digitsIter == 1){
+            if (operationArray[operationArray.length - 1] == operationArray[operationArray.length - 2]) {
+                digitsArray = expression.split(operationArray[operationArray.length - 1]);
+                digitsArray.pop();
+                console.log(digitsArray);
+            }
+            else {
+                digitsArray = expression.split(operationArray[operationArray.length - 2]);
+                digitsArray[digitsIter] = digitsArray[digitsIter].substring(0, digitsArray[digitsIter].length - 1);
+                console.log(digitsArray);
+            }
+        }
+
+        else {
+            if (operationArray[operationArray.length - 1] == operationArray[operationArray.length - 2]) {
+                let tempArr = [];
+                tempArr = expression.split(operationArray[operationArray.length - 1]);
+                tempArr.pop();
+                digitsArray[digitsIter] = tempArr[tempArr.length - 1];
+                console.log(tempArr);
+                console.log(digitsArray);
+            }
+            else {
+                let tempArr = [];
+                tempArr = expression.split(operationArray[operationArray.length - 2]);
+                console.log(tempArr);
+                digitsArray[digitsIter] = tempArr[tempArr.length - 1].substring(0, tempArr[tempArr.length - 1].length - 1);
+                console.log(digitsArray);
+            }
         }
     }
-    console.log('iterDigits:'+ digitsIter);
+
     digitsIter++;
 }
 
@@ -152,12 +195,8 @@ function clean() {
     console.log('result: '+ result);
     opIter = 0;
     digitsIter = 0;
-    for (let i = 0; i < operationArray.length; i++) {
-        operationArray.pop();
-    }
-    for (let j = 0; j < digitsArray.length; j++) {
-        digitsArray.pop();
-    }
+    operationArray = [];
+    digitsArray = [];
     console.log('digitsArr: '+ digitsArray);
     console.log('operationArray: '+ operationArray);
     displayExpression.textContent = expression;
