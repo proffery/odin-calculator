@@ -50,7 +50,7 @@ function displayInput(e) {
         calculate();
     }
     else {
-        digitsInput(e);
+        createDigitsArray(e);
     }
     // calculate();
 }
@@ -88,13 +88,17 @@ function createOperationArray(id) {
     console.log('iterOper:'+ opIter);
 }
 
-function createDigitsArray(id) {
-    digitsArray[opIter] = digitsArray[opIter] + id;
-    displayExpression.textContent = digitsArray[opIter];
+function dispayArrays() {
+    for (let i = 0; i < digitsArray.length; i++) {
+        displayExpression.textContent = `${digitsArray[i]}`;
+        // if (operationArray.length > 0) {
+        //     displayExpression.textContent = `${digitsArray[i]}${operationArray[i]}`;
+        // }
+    }
     console.log(digitsArray);
 }
 
-function digitsInput(e) {
+function createDigitsArray(e) {
     if (dotFlag == false) {
         if (digitsIter == 0) {
             digitsArray[opIter] = parseFloat(e.target.id);
@@ -108,10 +112,11 @@ function digitsInput(e) {
             digitsArray[opIter] = Math.round(parseFloat(e.target.id) * 10) / 100;
         }
         else {
-            digitsArray[opIter] = parseFloat(digitsArray[opIter] + e.target.id);//PROBLEM!!!
+            digitsArray[opIter] += Math.round(parseFloat(e.target.id) * Math.pow(10, digitsIter)) / Math.pow(100, digitsIter);
         }
     }
-    displayExpression.textContent = digitsArray;
+    
+    dispayArrays();
     console.log(`digits input: ${e.target.id}`);
     console.log('iterOper=:'+ opIter);
     console.log('iterDigits='+ digitsIter);
@@ -123,9 +128,7 @@ function changeDotFlag() {
     console.log('dotFlag:');
     if (dotFlag == false) {
         dotFlag = true;
-    }
-    else {
-        dotFlag = false;
+        digitsIter = 1;
     }
     console.log('dotflag => '+ dotFlag);
 }
@@ -141,24 +144,26 @@ function clean() {
     dotFlag = false;
     console.log('digitsArr: '+ digitsArray);
     console.log('operationArray: '+ operationArray);
-    displayExpression.textContent = expression;
-    displayResult.textContent = result;
+    dispayArrays();
 }
 
 function remove() {
     console.log('remove:');
-    console.log('expression before: '+ expression);
-    expression = expression.substring(0, expression.length - 1);
-    console.log('expression after: '+ expression);
-    displayExpression.textContent = expression;
+    let string = digitsArray[opIter].toString();
+    console.log(`${string}`);
+    string = string.substring(0, string.length - 1);
+    console.log(`${string}`);
+    digitsArray[opIter] = parseFloat(string);
+    if (isNaN(digitsArray[opIter])) {
+        digitsArray[opIter] = 0;
+    }
+    dispayArrays();
 }
 
 function plusMinus() {
     console.log('plusMinus:');
-    console.log('result before: '+ result);
-    result = result * -1;
-    console.log('result after: '+ result);
-    displayResult.textContent = result;
+    digitsArray[opIter] *= -1;
+    dispayArrays();
 }
 
 function minus(e) {
@@ -206,89 +211,3 @@ drawKeyboard();
 const keys = document.querySelectorAll('.key');
 keys.forEach(key => key.addEventListener('click', displayInput));
 keys.forEach(key => key.addEventListener('transitionend', removeAllTransition));
-//      if (id === '=') {
-//         if (digitsIter == 0 && opIter == 0) {
-//             console.log(digitsArray);
-//             digitsArray[digitsIter] = expression;
-//             console.log(digitsArray);
-//             console.log('iterOper=:'+ opIter);
-//             console.log('iterDigits=:'+ digitsIter);
-
-//         }
-//         // if (opIter == 0 && digitsIter == 1) {
-//         //     console.log(digitsArray);
-//         //     digitsArray[digitsIter] = expression;
-//         //     console.log(digitsArray);
-//         // }
-
-//         // if (opIter == 1 && digitsIter == 0) {
-//         //     digitsArray = expression.split(operationArray[operationArray.length - 1]);
-//         //     digitsArray.pop();
-//         //     console.log(digitsArray); 
-//         // }
-    
-//         if (opIter == 1 && digitsIter == 1) {
-//             digitsArray = expression.split(operationArray[operationArray.length - 1]);
-//             // digitsArray.pop();
-//             console.log(digitsArray);
-//             console.log('iterOper=:'+ opIter);
-//             console.log('iterDigits=:'+ digitsIter);
-
-//         }
-
-//         if (opIter == 1 && digitsIter == 2) {
-//             digitsArray = expression.split(operationArray[operationArray.length - 1]);
-//             // digitsArray.pop();
-//             console.log(digitsArray);
-//             console.log('iterOper=:'+ opIter);
-//             console.log('iterDigits=:'+ digitsIter);
-//         }
-//         else {
-//             let tempArr = [];
-//             tempArr = expression.split(operationArray[operationArray.length - 1]);
-//             console.log(tempArr);
-//             digitsArray[digitsIter] = tempArr[tempArr.length - 1];
-//             console.log(digitsArray);
-//         }
-//      }
-
-
-//    else {
-//         if (digitsIter < 1) {
-//             console.log(digitsArray);
-//             console.log('iterDigits:'+ digitsIter);
-//             //digitsIter++;
-//             //return;
-//         }
-
-//         else if (digitsIter == 1){
-//             if (operationArray[operationArray.length - 1] == operationArray[operationArray.length - 2]) {
-//                 digitsArray = expression.split(operationArray[operationArray.length - 1]);
-//                 digitsArray.pop();
-//                 console.log(digitsArray);
-//             }
-//             else {
-//                 digitsArray = expression.split(operationArray[operationArray.length - 2]);
-//                 digitsArray[digitsIter] = digitsArray[digitsIter].substring(0, digitsArray[digitsIter].length - 1);
-//                 console.log(digitsArray);
-//             }
-//         }
-
-//         else {
-//             if (operationArray[operationArray.length - 1] == operationArray[operationArray.length - 2]) {
-//                 let tempArr = [];
-//                 tempArr = expression.split(operationArray[operationArray.length - 1]);
-//                 tempArr.pop();
-//                 digitsArray[digitsIter] = tempArr[tempArr.length - 1];
-//                 console.log(tempArr);
-//                 console.log(digitsArray);
-//             }
-//             else {
-//                 let tempArr = [];
-//                 tempArr = expression.split(operationArray[operationArray.length - 2]);
-//                 console.log(tempArr);
-//                 digitsArray[digitsIter] = tempArr[tempArr.length - 1].substring(0, tempArr[tempArr.length - 1].length - 1);
-//                 console.log(digitsArray);
-//             }
-//         }
-//     }
