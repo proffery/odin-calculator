@@ -55,171 +55,171 @@ function displayInput(e) {
 }
 
 
-                            function createOperationArray(id) {
-                                operationArray[opIter] = id;
-                                console.log(operationArray);
-                                opIter++;
-                                digitsIter = 0;
-                                dotFlag = false;
-                                console.log('iterOper:'+ opIter);
-                                displayArrays();
-                            }
+function createOperationArray(id) {
+    operationArray[opIter] = id;
+    console.log(operationArray);
+    opIter++;
+    digitsIter = 0;
+    dotFlag = false;
+    console.log('iterOper:'+ opIter);
+    displayArrays();
+}
                             
-                            function displayArrays() {
-                                let expression = '';
-                                for (let i = 0; i < digitsArray.length; i++) {
-                                    if (operationArray.length == digitsArray.length ) {
-                                        expression += digitsArray[i].toString() + operationArray[i];
-                                    }
-                                    if (operationArray.length < digitsArray.length ) {
-                                        if (operationArray.length == 0){
-                                            expression = digitsArray[i].toString();
-                                        }
-                                        else {
-                                            expression += operationArray[i - 1] + digitsArray[i].toString();
-                                            if (operationArray[i - 1] == undefined) {
-                                                expression = expression.replaceAll('undefined', '');
-                                            }
-                                        }
-                                    }
-                                }
-                                displayExpression.textContent = expression;
-                                console.log(digitsArray);
-                            }
-                            
-                            function createDigitsArray(e) {
-                                if (dotFlag == false) {
-                                    if (digitsIter == 0) {
-                                        digitsArray[opIter] = parseFloat(e.target.id);
-                                    }
-                                    else {
-                                        digitsArray[opIter] = parseFloat(digitsArray[opIter] + e.target.id);
-                                    }
-                                }
-                                else {
-                                    if (digitsIter == 0) {
-                                        digitsArray[opIter] = Math.round(parseFloat(e.target.id) * 10) / 100;
-                                    }
-                                    else {
-                                        digitsArray[opIter] += Math.round(parseFloat(e.target.id) * Math.pow(10, digitsIter)) / Math.pow(100, digitsIter);
-                                    }
-                                }
-                                
-                                displayArrays();
-                                console.log(`digits input: ${e.target.id}`);
-                                console.log('iterOper=:'+ opIter);
-                                console.log('iterDigits='+ digitsIter);
-                                console.log(digitsArray);
-                                digitsIter++;
-                            }
-                            
-                            function changeDotFlag() {
-                                console.log('dotFlag:');
-                                if (dotFlag == false) {
-                                    dotFlag = true;
-                                    digitsIter = 1;
-                                }
-                                console.log('dotflag => '+ dotFlag);
-                            }
-                            
-                            function clean() {
-                                console.log('clean:');
-                                result = 0;
-                                opIter = 0;
-                                digitsIter = 0;
-                                operationArray = [];
-                                digitsArray = [];
-                                dotFlag = false;
-                                console.log('digitsArr: '+ digitsArray);
-                                console.log('operationArray: '+ operationArray);
-                                displayExpression.textContent = ''
-                            }
-                            
-                            function remove() {
-                                console.log('remove:');
-                                let string = digitsArray[opIter].toString();
-                                dotFlag = false;
-                                console.log(`${string}`);
-                                string = string.substring(0, string.length - 1);
-                                console.log(`${string}`);
-                                digitsArray[opIter] = parseFloat(string);
-                                if (isNaN(digitsArray[opIter])) {
-                                    digitsArray[opIter] = 0;
-                                }
-                                displayArrays();
-                            }
-                            
-                            function plusMinus() {
-                                console.log('plusMinus:');
-                                digitsArray[opIter] *= -1;
-                                displayArrays();
-                            }
-                            
-                            function minus(e) {
-                                console.log('minus:');
-                                //cleanExpressionEnter(e.target.id);
-                            }
-                            
-                            function plus(e) {
-                                console.log('plus:');
-                                //cleanExpressionEnter(e.target.id);
-                            }
-                            
-                            function multiply(e) {
-                                console.log('multiply:');
-                                //cleanExpressionEnter(e.target.id);
-                            }
-                            
-                            function divide(e) {
-                                console.log('division:');
-                                //cleanExpressionEnter(e.target.id);
-                            }
-                            
-                            function calculate() {
-                                // if (operationArray.length == 0 || digitsArray.length < 2) {
-                                    //     return;
-                                    // }
-                                    
-                                    // else {
-                                        //     for (let i = 0; i < digitsArray.length; i++) {
-                                            //         if (operationArray[i] === '-') {
-                                                //             result = parseFloat(digitsArray[i]) - parseFloat(digitsArray[i + 1]);
-                                                //         }
-                                                //         if (operationArray[i] === '+') {
-                                                    //             result = parseFloat(digitsArray[i]) + parseFloat(digitsArray[i + 1]);
-                                                    //         }
-                                                    //         if (operationArray[i] === '*') {
-                                                        //             result = parseFloat(digitsArray[i]) * parseFloat(digitsArray[i + 1]);
-                                                        //         }
-                                                        //         if (operationArray[i] === '/') {
-                                                            //             result = parseFloat(digitsArray[i]) / parseFloat(digitsArray[i + 1]);
-                                                            //         }  
-                                                            //     }
-                                                            // // }
-                                                            // displayResult.textContent = result;
-                                                        }
-                            
-                            // function cleanExpressionEnter(id) {
-                                //     console.log('expression before: '+ expression);
-                                //     expression = expression.concat(id);
-                                //     console.log('expression after: '+ expression);
-                                //     if (regex.test(expression)) {
-                                    //         console.log(`cleanExpressionEnter ${regex.test(expression)}:`); 
-                                    //         console.log('expression: '+ expression);
-                                    //         displayExpression.textContent = expression;
-                                    //     }
-                                    //     else {
-                                        //         console.log(`cleanExpressionEnter ${regex.test(expression)} -> remove:`); 
-                                        //         remove();
-                                        //     }
-                                        // }
+function displayArrays() {
+    let expression = '';
+    for (let i = 0; i < digitsArray.length; i++) {
+        if (operationArray.length == digitsArray.length ) {
+            expression += digitsArray[i].toString() + operationArray[i];
+        }
+        if (operationArray.length < digitsArray.length ) {
+            if (operationArray.length == 0){
+                expression = digitsArray[i].toString();
+            }
+            else {
+                expression += operationArray[i - 1] + digitsArray[i].toString();
+                if (operationArray[i - 1] == undefined) {
+                    expression = expression.replaceAll('undefined', '');
+                }
+            }
+        }
+    }
+    displayExpression.textContent = expression;
+    console.log(digitsArray);
+}
+
+function createDigitsArray(e) {
+    if (dotFlag == false) {
+        if (digitsIter == 0) {
+            digitsArray[opIter] = parseFloat(e.target.id);
+        }
+        else {
+            digitsArray[opIter] = parseFloat(digitsArray[opIter] + e.target.id);
+        }
+    }
+    else {
+        if (digitsIter == 0) {
+            digitsArray[opIter] = Math.round(parseFloat(e.target.id) * 10) / 100;
+            digitsIter++;
+        }
+        else {
+            digitsArray[opIter] += Math.round(parseFloat(e.target.id) * Math.pow(10, digitsIter)) / Math.pow(100, digitsIter);
+        }
+    }
+    
+    displayArrays();
+    console.log(`digits input: ${e.target.id}`);
+    console.log('iterOper=:'+ opIter);
+    console.log('iterDigits='+ digitsIter);
+    console.log(digitsArray);
+    digitsIter++;
+}
+
+function changeDotFlag() {
+    console.log('dotFlag:');
+    if (dotFlag == false) {
+        dotFlag = true;
+    }
+    console.log('dotflag => '+ dotFlag);
+}
+
+function clean() {
+    console.log('clean:');
+    result = 0;
+    opIter = 0;
+    digitsIter = 0;
+    operationArray = [];
+    digitsArray = [];
+    dotFlag = false;
+    console.log('digitsArr: '+ digitsArray);
+    console.log('operationArray: '+ operationArray);
+    displayExpression.textContent = ''
+}
+
+function remove() {
+    console.log('remove:');
+    let string = digitsArray[opIter].toString();
+    dotFlag = false;
+    console.log(`${string}`);
+    string = string.substring(0, string.length - 1);
+    console.log(`${string}`);
+    digitsArray[opIter] = parseFloat(string);
+    if (isNaN(digitsArray[opIter])) {
+        digitsArray[opIter] = 0;
+    }
+    displayArrays();
+}
+
+function plusMinus() {
+    console.log('plusMinus:');
+    digitsArray[opIter] *= -1;
+    displayArrays();
+}
+
+function minus(e) {
+    console.log('minus:');
+    //cleanExpressionEnter(e.target.id);
+}
+
+function plus(e) {
+    console.log('plus:');
+    //cleanExpressionEnter(e.target.id);
+}
+
+function multiply(e) {
+    console.log('multiply:');
+    //cleanExpressionEnter(e.target.id);
+}
+
+function divide(e) {
+    console.log('division:');
+    //cleanExpressionEnter(e.target.id);
+}
+
+function calculate() {
+// if (operationArray.length == 0 || digitsArray.length < 2) {
+    //     return;
+    // }
+    
+    // else {
+    //     for (let i = 0; i < digitsArray.length; i++) {
+    //         if (operationArray[i] === '-') {
+    //             result = parseFloat(digitsArray[i]) - parseFloat(digitsArray[i + 1]);
+    //         }
+    //         if (operationArray[i] === '+') {
+    //             result = parseFloat(digitsArray[i]) + parseFloat(digitsArray[i + 1]);
+    //         }
+    //         if (operationArray[i] === '*') {
+    //             result = parseFloat(digitsArray[i]) * parseFloat(digitsArray[i + 1]);
+    //         }
+    //         if (operationArray[i] === '/') {
+    //             result = parseFloat(digitsArray[i]) / parseFloat(digitsArray[i + 1]);
+    //         }  
+    //     }
+    //}
+    // displayResult.textContent = result;
+}
+            
+    //function cleanExpressionEnter(id) {
+    //     console.log('expression before: '+ expression);
+    //     expression = expression.concat(id);
+    //     console.log('expression after: '+ expression);
+    //     if (regex.test(expression)) {
+    //         console.log(`cleanExpressionEnter ${regex.test(expression)}:`); 
+    //         console.log('expression: '+ expression);
+    //         displayExpression.textContent = expression;
+    //     }
+    //     else {
+    //         console.log(`cleanExpressionEnter ${regex.test(expression)} -> remove:`); 
+    //         remove();
+    //     }
+    //}
                                         
-                                        function removeAllTransition(e) {
-                                            if (e.propertyName !== 'transform') return;
-                                            this.classList.remove('key-click');
-                                        } 
-                                        
-                                        drawKeyboard();
-                                        const keys = document.querySelectorAll('.key');
-                                        keys.forEach(key => key.addEventListener('click', displayInput));
-                                        keys.forEach(key => key.addEventListener('transitionend', removeAllTransition));
+function removeAllTransition(e) {
+    if (e.propertyName !== 'transform') return;
+    this.classList.remove('key-click');
+} 
+
+drawKeyboard();
+const keys = document.querySelectorAll('.key');
+keys.forEach(key => key.addEventListener('click', displayInput));
+keys.forEach(key => key.addEventListener('transitionend', removeAllTransition));
