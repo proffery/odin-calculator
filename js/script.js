@@ -114,12 +114,12 @@ function createDigitsArray(id) {
             if (digitsArray[opIter] < 0) {
                 digitsArray[opIter] *= -1;
                 digitsArray[opIter] += Math.round(parseFloat(id) * Math.pow(10, digitsIter)) / Math.pow(100, digitsIter);
-                digitsArray[opIter] = Math.round(digitsArray[opIter] * 1000000) / 1000000;
+                digitsArray[opIter] = Math.round(digitsArray[opIter] * 10000000) / 10000000;
                 digitsArray[opIter] *= -1;    
             }
             else {
                 digitsArray[opIter] += Math.round(parseFloat(id) * Math.pow(10, digitsIter)) / Math.pow(100, digitsIter);
-                digitsArray[opIter] = Math.round(digitsArray[opIter] * 1000000) / 1000000;
+                digitsArray[opIter] = Math.round(digitsArray[opIter] * 10000000) / 10000000;
             }
         }
     }
@@ -182,9 +182,6 @@ function remove() {
         console.log(digitsArray);
         console.log(operationArray);
         displayArrays();
-    }
-    else {
-        clean();
     }
 }
 
