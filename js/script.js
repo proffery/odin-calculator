@@ -1,6 +1,5 @@
 const keyboard = ['CE', '<-', '/', '*', '-', '7', '8', '9', '+', '4', '5', '6', '.', '1', '2', '3', '+/-', '0', '='];
 const keysContainer = document.querySelector('.keyboard');
-const regex = /((\-|\d)(\d*)(\.?\d*)?(\+|\-|\*|\/)?){1,10}/;
 const displayExpression = document.querySelector('.display-expression');
 const displayResult = document.querySelector('.display-result');
 let result = 0;
@@ -9,6 +8,7 @@ let operationArray = [];
 let digitsIter = 0;
 let opIter = 0;
 let dotFlag = false;
+
 function drawKeyboard() {
     keysContainer.innerHTML = keyboard.map((key) => `<div class="key" id="${key}">${key}</div>`).join('');
 }
@@ -27,19 +27,15 @@ function displayInput(e) {
         plusMinus();
     }
     else if(e.target.id === '-') {
-        minus(e);
         createOperationArray(e.target.id);
     }
     else if(e.target.id === '+') {
-        plus(e);
         createOperationArray(e.target.id);
     }
     else if(e.target.id === '*') {
-        multiply(e);
         createOperationArray(e.target.id);
     }
     else if(e.target.id === '/') {
-        divide(e);
         createOperationArray(e.target.id);
     }
     else if(e.target.id === '.') {
@@ -49,20 +45,33 @@ function displayInput(e) {
         calculate();
     }
     else {
-        createDigitsArray(e);
+        createDigitsArray(e.target.id);
     }
     // calculate();
 }
 
 
 function createOperationArray(id) {
-    operationArray[opIter] = id;
-    console.log(operationArray);
-    opIter++;
-    digitsIter = 0;
-    dotFlag = false;
-    console.log('iterOper:'+ opIter);
-    displayArrays();
+    if (digitsArray.length > 0 ) {
+        if (operationArray.length < digitsArray.length) {
+            operationArray[opIter] = id;
+            console.log(operationArray);
+            opIter++;
+            digitsIter = 0;
+            dotFlag = false;
+            console.log('iterOper:'+ opIter);
+            displayArrays();
+        }
+        else {
+            opIter--;
+            operationArray[opIter] = id;
+            opIter++;
+            digitsIter = 0;
+            dotFlag = false;
+            displayArrays();
+        }
+    }
+    
 }
                             
 function displayArrays() {
@@ -87,27 +96,26 @@ function displayArrays() {
     console.log(digitsArray);
 }
 
-function createDigitsArray(e) {
+function createDigitsArray(id) {
     if (dotFlag == false) {
         if (digitsIter == 0) {
-            digitsArray[opIter] = parseFloat(e.target.id);
+            digitsArray[opIter] = parseFloat(id);
         }
         else {
-            digitsArray[opIter] = parseFloat(digitsArray[opIter] + e.target.id);
+            digitsArray[opIter] = parseFloat(digitsArray[opIter] + id);
         }
     }
     else {
-        if (digitsIter == 0) {
-            digitsArray[opIter] = Math.round(parseFloat(e.target.id) * 10) / 100;
-            digitsIter++;
+        if (digitsArray[opIter] == undefined) {
+            digitsArray[opIter] = Math.round(parseFloat(id) * 10) / 100;
         }
         else {
-            digitsArray[opIter] += Math.round(parseFloat(e.target.id) * Math.pow(10, digitsIter)) / Math.pow(100, digitsIter);
+            digitsArray[opIter] += Math.round(parseFloat(id) * Math.pow(10, digitsIter)) / Math.pow(100, digitsIter);
         }
     }
     
     displayArrays();
-    console.log(`digits input: ${e.target.id}`);
+    console.log(`digits input: ${id}`);
     console.log('iterOper=:'+ opIter);
     console.log('iterDigits='+ digitsIter);
     console.log(digitsArray);
@@ -118,7 +126,9 @@ function changeDotFlag() {
     console.log('dotFlag:');
     if (dotFlag == false) {
         dotFlag = true;
+        digitsIter = 1;
     }
+    displayArrays();
     console.log('dotflag => '+ dotFlag);
 }
 
@@ -136,43 +146,34 @@ function clean() {
 }
 
 function remove() {
-    console.log('remove:');
-    let string = digitsArray[opIter].toString();
-    dotFlag = false;
-    console.log(`${string}`);
-    string = string.substring(0, string.length - 1);
-    console.log(`${string}`);
-    digitsArray[opIter] = parseFloat(string);
-    if (isNaN(digitsArray[opIter])) {
-        digitsArray[opIter] = 0;
+    if (digitsArray.length > 0) {
+        console.log('remove:');
+        if (digitsArray.length > operationArray.length){
+            let string = digitsArray[opIter].toString();
+            dotFlag = false;
+            console.log(`${string}`);
+            string = string.substring(0, string.length - 1);
+            console.log(`${string}`);
+            digitsArray[opIter] = parseFloat(string);
+            if (isNaN(digitsArray[opIter])) {
+                digitsArray[opIter] = 0;
+                dotFlag = false;
+            }
+        }
+        else {
+            operationArray.pop();
+            opIter--;
+        }
+        displayArrays();
     }
-    displayArrays();
 }
 
 function plusMinus() {
-    console.log('plusMinus:');
-    digitsArray[opIter] *= -1;
-    displayArrays();
-}
-
-function minus(e) {
-    console.log('minus:');
-    //cleanExpressionEnter(e.target.id);
-}
-
-function plus(e) {
-    console.log('plus:');
-    //cleanExpressionEnter(e.target.id);
-}
-
-function multiply(e) {
-    console.log('multiply:');
-    //cleanExpressionEnter(e.target.id);
-}
-
-function divide(e) {
-    console.log('division:');
-    //cleanExpressionEnter(e.target.id);
+    if (digitsArray.length > 0) {
+        console.log('plusMinus:');
+        digitsArray[opIter] *= -1;
+        displayArrays();
+    }
 }
 
 function calculate() {
@@ -198,21 +199,6 @@ function calculate() {
     //}
     // displayResult.textContent = result;
 }
-            
-    //function cleanExpressionEnter(id) {
-    //     console.log('expression before: '+ expression);
-    //     expression = expression.concat(id);
-    //     console.log('expression after: '+ expression);
-    //     if (regex.test(expression)) {
-    //         console.log(`cleanExpressionEnter ${regex.test(expression)}:`); 
-    //         console.log('expression: '+ expression);
-    //         displayExpression.textContent = expression;
-    //     }
-    //     else {
-    //         console.log(`cleanExpressionEnter ${regex.test(expression)} -> remove:`); 
-    //         remove();
-    //     }
-    //}
                                         
 function removeAllTransition(e) {
     if (e.propertyName !== 'transform') return;
