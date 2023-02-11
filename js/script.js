@@ -111,7 +111,16 @@ function createDigitsArray(id) {
             digitsArray[opIter] = Math.round(parseFloat(id) * 10) / 100;
         }
         else {
-            digitsArray[opIter] += Math.round(parseFloat(id) * Math.pow(10, digitsIter)) / Math.pow(100, digitsIter);
+            if (digitsArray[opIter] < 0) {
+                digitsArray[opIter] *= -1;
+                digitsArray[opIter] += Math.round(parseFloat(id) * Math.pow(10, digitsIter)) / Math.pow(100, digitsIter);
+                digitsArray[opIter] = Math.round(digitsArray[opIter] * 1000000) / 1000000;
+                digitsArray[opIter] *= -1;    
+            }
+            else {
+                digitsArray[opIter] += Math.round(parseFloat(id) * Math.pow(10, digitsIter)) / Math.pow(100, digitsIter);
+                digitsArray[opIter] = Math.round(digitsArray[opIter] * 1000000) / 1000000;
+            }
         }
     }
     
@@ -182,7 +191,9 @@ function remove() {
 function plusMinus() {
     if (digitsArray.length > 0) {
         console.log('plusMinus:');
-        digitsArray[opIter] *= -1;
+        if (!isNaN(digitsArray[opIter])) {
+            digitsArray[opIter] *= -1;
+        }
         displayArrays();
     }
 }
