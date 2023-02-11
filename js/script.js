@@ -124,7 +124,7 @@ function createDigitsArray(id) {
 
 function changeDotFlag() {
     console.log('dotFlag:');
-    if (dotFlag == false) {
+    if (dotFlag == false && digitsArray[opIter] % 1 == 0 || digitsIter == 0) {
         dotFlag = true;
         digitsIter = 1;
     }
@@ -142,12 +142,13 @@ function clean() {
     dotFlag = false;
     console.log('digitsArr: '+ digitsArray);
     console.log('operationArray: '+ operationArray);
-    displayExpression.textContent = ''
+    displayArrays();
 }
 
 function remove() {
     if (digitsArray.length > 0) {
         console.log('remove:');
+        dotFlag = false;
         if (digitsArray.length > operationArray.length){
             let string = digitsArray[opIter].toString();
             dotFlag = false;
@@ -156,15 +157,23 @@ function remove() {
             console.log(`${string}`);
             digitsArray[opIter] = parseFloat(string);
             if (isNaN(digitsArray[opIter])) {
-                digitsArray[opIter] = 0;
-                dotFlag = false;
+                digitsIter = 0;
+                digitsArray.pop();
+                if (digitsArray.length == 0) {
+                    clean();
+                }
             }
         }
         else {
             operationArray.pop();
             opIter--;
         }
+        console.log(digitsArray);
+        console.log(operationArray);
         displayArrays();
+    }
+    else {
+        clean();
     }
 }
 
