@@ -94,6 +94,7 @@ function displayArrays() {
     }
     displayExpression.textContent = expression;
     console.log(digitsArray);
+    console.log(operationArray);
 }
 
 function createDigitsArray(id) {
@@ -124,7 +125,7 @@ function createDigitsArray(id) {
 
 function changeDotFlag() {
     console.log('dotFlag:');
-    if (dotFlag == false && digitsArray[opIter] % 1 == 0 || digitsIter == 0) {
+    if (digitsArray[opIter] % 1 == 0 || digitsIter == 0) {
         dotFlag = true;
         digitsIter = 1;
     }
@@ -149,9 +150,9 @@ function remove() {
     if (digitsArray.length > 0) {
         console.log('remove:');
         dotFlag = false;
+        digitsIter--;
         if (digitsArray.length > operationArray.length){
             let string = digitsArray[opIter].toString();
-            dotFlag = false;
             console.log(`${string}`);
             string = string.substring(0, string.length - 1);
             console.log(`${string}`);
@@ -168,6 +169,7 @@ function remove() {
             operationArray.pop();
             opIter--;
         }
+        
         console.log(digitsArray);
         console.log(operationArray);
         displayArrays();
