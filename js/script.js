@@ -1,11 +1,12 @@
-const keyboard = ['CE', '<-', '/', '*', '-', '7', '8', '9', '+', '4', '5', '6', '.', '1', '2', '3', '+/-', '0', '='];
+const keyboard = ['C', '<-', '/', '*', '-', '7', '8', '9', '+', '4', '5', '6', '.', '1', '2', '3', '+/-', '0', '='];
 const keysContainer = document.querySelector('.keyboard');
-const displayExpression = document.querySelector('.display-expression');
-const displayResult = document.querySelector('.display-result');
-let digitsArray = [];
+const dispExpression = document.querySelector('.display-expression');
+const dispResult = document.querySelector('.display-result');
+const CALC_ACCURACY = 10000000000;
+let numbersArray = [];
 let operationArray = [];
-let digitsIter = 0;
-let opIter = 0;
+let numbersCounter = 0;
+let operationCounter = 0;
 let dotFlag = false;
 
 function drawKeyboard() {
@@ -16,8 +17,8 @@ function input(e) {
     const pressedKey = document.querySelector(`[id="${e.target.id}"]`);
     pressedKey.classList.add('key-click');
     
-    if(e.target.id === 'CE') {
-        clean();
+    if(e.target.id === 'C') {
+        clear();
     }
     else if(e.target.id === '<-') {
         remove();
@@ -44,204 +45,194 @@ function input(e) {
         calculate();
     }
     else {
-        createDigitsArray(e.target.id);
+        createNumbersArray(e.target.id);
     }
-    displayRes(calculate());
+    displayResult(calculate());
 }
 
 
 function createOperationArray(id) {
-    if (digitsArray.length > 0 ) {
-        if (operationArray.length < digitsArray.length) {
-            operationArray[opIter] = id;
+    if (numbersArray.length > 0 ) {
+        if (operationArray.length < numbersArray.length) {
+            operationArray[operationCounter] = id;
             console.log(operationArray);
-            opIter++;
-            digitsIter = 0;
+            operationCounter++;
+            numbersCounter = 0;
             dotFlag = false;
-            console.log('iterOper:'+ opIter);
-            displayArrays();
+            console.log('iterOper:'+ operationCounter);
+            displayExpression();
         }
         else {
-            opIter--;
-            operationArray[opIter] = id;
-            opIter++;
-            digitsIter = 0;
+            operationCounter--;
+            operationArray[operationCounter] = id;
+            operationCounter++;
+            numbersCounter = 0;
             dotFlag = false;
-            displayArrays();
+            displayExpression();
+        }
+    }
+}
+function createNumbersArray(id) {
+    if (dotFlag == false) {
+        if (numbersCounter == 0) {
+            numbersArray[operationCounter] = parseFloat(id);
+        }
+        else {
+            numbersArray[operationCounter] = parseFloat(numbersArray[operationCounter] + id);
+        }
+    }
+    else {
+        if (numbersArray[operationCounter] == undefined) {
+            numbersArray[operationCounter] = Math.round(parseFloat(id) * 10) / 100;
+        }
+        else {
+            if (numbersArray[operationCounter] < 0) {
+                numbersArray[operationCounter] *= -1;
+                numbersArray[operationCounter] += Math.round(parseFloat(id) * Math.pow(10, numbersCounter)) / Math.pow(100, numbersCounter);
+                numbersArray[operationCounter] = Math.round(numbersArray[operationCounter] * CALC_ACCURACY) / CALC_ACCURACY;
+                numbersArray[operationCounter] *= -1;    
+            }
+            else {
+                numbersArray[operationCounter] += Math.round(parseFloat(id) * Math.pow(10, numbersCounter)) / Math.pow(100, numbersCounter);
+                numbersArray[operationCounter] = Math.round(numbersArray[operationCounter] * CALC_ACCURACY) / CALC_ACCURACY;
+            }
         }
     }
     
-}
-                            
-function displayArrays() {
+    displayExpression();
+    console.log(`digits input: ${id}`);
+    console.log('iterOper=:'+ operationCounter);
+    console.log('iterDigits='+ numbersCounter);
+    console.log(numbersArray);
+    numbersCounter++;
+}     
+
+function displayExpression() {
     let expression = '';
-    for (let i = 0; i < digitsArray.length; i++) {
-        if (operationArray.length == digitsArray.length ) {
-            expression += digitsArray[i].toString() + operationArray[i];
+    for (let i = 0; i < numbersArray.length; i++) {
+        if (operationArray.length == numbersArray.length ) {
+            expression += numbersArray[i].toString() + operationArray[i];
         }
-        if (operationArray.length < digitsArray.length ) {
+        if (operationArray.length < numbersArray.length ) {
             if (operationArray.length == 0){
-                expression = digitsArray[i].toString();
+                expression = numbersArray[i].toString();
             }
             else {
-                expression += operationArray[i - 1] + digitsArray[i].toString();
+                expression += operationArray[i - 1] + numbersArray[i].toString();
                 if (operationArray[i - 1] == undefined) {
                     expression = expression.replaceAll('undefined', '');
                 }
             }
         }
     }
-    displayExpression.textContent = expression;
-    console.log(digitsArray);
+    dispExpression.textContent = expression;
+    console.log(numbersArray);
     console.log(operationArray);
 }
 
-function displayRes(result) {
-    displayResult.textContent = result;
-}
-
-function createDigitsArray(id) {
-    if (dotFlag == false) {
-        if (digitsIter == 0) {
-            digitsArray[opIter] = parseFloat(id);
-        }
-        else {
-            digitsArray[opIter] = parseFloat(digitsArray[opIter] + id);
-        }
+function displayResult(result) {
+    if (isNaN(result)) {
+        dispResult.textContent = '';
     }
     else {
-        if (digitsArray[opIter] == undefined) {
-            digitsArray[opIter] = Math.round(parseFloat(id) * 10) / 100;
-        }
-        else {
-            if (digitsArray[opIter] < 0) {
-                digitsArray[opIter] *= -1;
-                digitsArray[opIter] += Math.round(parseFloat(id) * Math.pow(10, digitsIter)) / Math.pow(100, digitsIter);
-                digitsArray[opIter] = Math.round(digitsArray[opIter] * 10000000) / 10000000;
-                digitsArray[opIter] *= -1;    
-            }
-            else {
-                digitsArray[opIter] += Math.round(parseFloat(id) * Math.pow(10, digitsIter)) / Math.pow(100, digitsIter);
-                digitsArray[opIter] = Math.round(digitsArray[opIter] * 10000000) / 10000000;
-            }
-        }
+        dispResult.textContent = result;
     }
-    
-    displayArrays();
-    console.log(`digits input: ${id}`);
-    console.log('iterOper=:'+ opIter);
-    console.log('iterDigits='+ digitsIter);
-    console.log(digitsArray);
-    digitsIter++;
 }
 
 function changeDotFlag() {
     console.log('dotFlag:');
-    if (digitsArray[opIter] % 1 == 0 || digitsIter == 0) {
+    if (numbersArray[operationCounter] % 1 == 0 || numbersCounter == 0) {
         dotFlag = true;
-        digitsIter = 1;
+        numbersCounter = 1;
     }
-    displayArrays();
+    displayExpression();
     console.log('dotflag => '+ dotFlag);
 }
 
-function clean() {
-    console.log('clean:');
+function clear() {
+    console.log('clear:');
     result = 0;
-    opIter = 0;
-    digitsIter = 0;
+    operationCounter = 0;
+    numbersCounter = 0;
     operationArray = [];
-    digitsArray = [];
+    numbersArray = [];
     dotFlag = false;
-    console.log('digitsArr: '+ digitsArray);
+    console.log('digitsArr: '+ numbersArray);
     console.log('operationArray: '+ operationArray);
-    displayArrays();
+    displayExpression();
 }
 
 function remove() {
-    if (digitsArray.length > 0) {
+    if (numbersArray.length > 0) {
         console.log('remove:');
         dotFlag = false;
-        digitsIter--;
-        if (digitsArray.length > operationArray.length){
-            let string = digitsArray[opIter].toString();
+        numbersCounter--;
+        if (numbersArray.length > operationArray.length){
+            let string = numbersArray[operationCounter].toString();
             console.log(`${string}`);
             string = string.substring(0, string.length - 1);
             console.log(`${string}`);
-            digitsArray[opIter] = parseFloat(string);
-            if (isNaN(digitsArray[opIter])) {
-                digitsIter = 0;
-                digitsArray.pop();
-                if (digitsArray.length == 0) {
-                    clean();
+            numbersArray[operationCounter] = parseFloat(string);
+            if (isNaN(numbersArray[operationCounter])) {
+                numbersCounter = 0;
+                numbersArray.pop();
+                if (numbersArray.length == 0) {
+                    clear();
                 }
             }
         }
         else {
             operationArray.pop();
-            opIter--;
+            operationCounter--;
         }
-        
-        console.log(digitsArray);
+        console.log(numbersArray);
         console.log(operationArray);
-        displayArrays();
+        displayExpression();
     }
 }
 
 function plusMinus() {
-    if (digitsArray.length > 0) {
+    if (numbersArray.length > 0) {
         console.log('plusMinus:');
-        if (!isNaN(digitsArray[opIter])) {
-            digitsArray[opIter] *= -1;
+        if (!isNaN(numbersArray[operationCounter])) {
+            numbersArray[operationCounter] *= -1;
         }
-        displayArrays();
+        displayExpression();
     }
 }
 
 function calculate() {
-    let tempDigitsArray = Array.from(digitsArray);
+    let tempDigitsArray = Array.from(numbersArray);
     let tempOperationArray = Array.from(operationArray);
-    if (tempDigitsArray.length <= 1) {
-        console.log(`Result: ${tempDigitsArray[0]}`)
-        return tempDigitsArray[0];
-    }
-    
-    else {
-        while (tempDigitsArray.length > 1) {
-            if (tempOperationArray[0] === '*') {
-                tempDigitsArray[0] *= tempDigitsArray[1];
-                tempOperationArray.splice(0, 1);
-                tempDigitsArray.splice(1, 1);
-            }
-            else if (tempOperationArray[0] === '/') {
-                tempDigitsArray[0] /= tempDigitsArray[1];
-                tempOperationArray.splice(0, 1);
-                tempDigitsArray.splice(1, 1);
-            }
-            else if (tempOperationArray[0] === '+') {
-                tempDigitsArray[0] += tempDigitsArray[1];
-                tempOperationArray.splice(0, 1);
-                tempDigitsArray.splice(1, 1);
-            }
-            else {
-                tempDigitsArray[0] -= tempDigitsArray[1];
-                tempOperationArray.splice(0, 1);
-                tempDigitsArray.splice(1, 1);
-            }
-        } 
-            
-            // if (operationArray[i] === '/') {
-            //     result = parseFloat(digitsArray[i]) / parseFloat(digitsArray[i + 1]);
-            // }  
-            // if (operationArray[i] === '+') {
-            //     result = parseFloat(digitsArray[i]) + parseFloat(digitsArray[i + 1]);
-            // }
-            // if (operationArray[i] === '-') {
-            //     result = parseFloat(digitsArray[i]) - parseFloat(digitsArray[i + 1]);
-            // }
-    
-        return tempDigitsArray[0];
-    }
+    for (let i = 0; i < tempOperationArray.length; i++) {
+        if (tempOperationArray[i] === '*') {
+            tempDigitsArray[i] *= tempDigitsArray[i + 1];
+            tempOperationArray.splice(i, 1);
+            tempDigitsArray.splice(i + 1, 1);
+        }
+        if (tempOperationArray[i] === '/') {
+            tempDigitsArray[i] /= tempDigitsArray[i + 1];
+            tempOperationArray.splice(i, 1);
+            tempDigitsArray.splice(i + 1, 1);
+        }
+        console.log(tempDigitsArray);
+        console.log(tempOperationArray);
+    } 
+    for (let i = 0; i < tempOperationArray.length; i++) {
+        if (tempOperationArray[i] === '+') {
+            tempDigitsArray[i] += tempDigitsArray[i + 1];
+            tempOperationArray.splice(i, 1);
+            tempDigitsArray.splice(i + 1, 1);
+        }
+        if (tempOperationArray[i] === '-') {
+            tempDigitsArray[i] -= tempDigitsArray[i + 1];
+            tempOperationArray.splice(i, 1);
+            tempDigitsArray.splice(i + 1, 1);
+        }
+        console.log(tempDigitsArray);
+        console.log(tempOperationArray);
+    } 
+    return Math.round(tempDigitsArray[0] * CALC_ACCURACY) / CALC_ACCURACY;
 }
                                         
 function removeAllTransition(e) {
