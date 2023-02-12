@@ -88,8 +88,13 @@ h1 {
     margin: 6px;
     align-items: center;
     justify-content: center;
-    box-shadow: #a3a1a1 0 5px 5px;
+    box-shadow: #a3a1a1 0 3px 3px;
+    border-radius: 2px;
     transition: all .1s ease;
+}
+
+.key[id="0"] {
+    width: 128px;
 }
 
 .key-click {
