@@ -3,7 +3,7 @@ const keysContainer = document.querySelector('.keyboard');
 const dispExpression = document.querySelector('.display-expression');
 const dispResult = document.querySelector('.display-result');
 const display = document.querySelector('.display');
-const CALC_ACCURACY = 10000000000;
+const CALC_ACCURACY = 1000000000;
 let numbersArray = [];
 let operationArray = [];
 let numbersCounter = 0;
@@ -47,6 +47,7 @@ function input(e) {
     else {
         createNumbersArray(e.target.id);
     }
+    displayExpression();
     displayResult(calculate());
 }
 
@@ -59,7 +60,6 @@ function equals() {
         let resultToArray = calculate();
         clear();
         numbersArray[0] = resultToArray;
-        dispExpression();
     }
     else {
         displayError();
@@ -73,7 +73,6 @@ function createOperationArray(id) {
             operationCounter++;
             numbersCounter = 0;
             dotFlag = false;
-            displayExpression();
         }
         else {
             operationCounter--;
@@ -81,7 +80,6 @@ function createOperationArray(id) {
             operationCounter++;
             numbersCounter = 0;
             dotFlag = false;
-            displayExpression();
         }
     }
     else {
@@ -114,7 +112,6 @@ function createNumbersArray(id) {
             }
         }
     }
-    displayExpression();
     numbersCounter++;
 }     
 
@@ -156,7 +153,6 @@ function changeDotFlag() {
     else {
         displayError();
     }
-    displayExpression();
 }
 
 function clear() {
@@ -166,7 +162,6 @@ function clear() {
     operationArray = [];
     numbersArray = [];
     dotFlag = false;
-    displayExpression();
 }
 
 function remove() {
@@ -189,7 +184,6 @@ function remove() {
             operationArray.pop();
             operationCounter--;
         }
-        displayExpression();
     }
     else {
         displayError();
@@ -201,7 +195,6 @@ function plusMinus() {
         if (!isNaN(numbersArray[operationCounter])) {
             numbersArray[operationCounter] *= -1;
         }
-        displayExpression();
     }
     else {
         displayError();
