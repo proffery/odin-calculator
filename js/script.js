@@ -209,11 +209,15 @@ function calculate() {
             tempDigitsArray[i] *= tempDigitsArray[i + 1];
             tempOperationArray.splice(i, 1);
             tempDigitsArray.splice(i + 1, 1);
+            i--;
         }
+    }
+    for (let i = 0; i < tempOperationArray.length; i++) {
         if (tempOperationArray[i] === '/') {
             tempDigitsArray[i] /= tempDigitsArray[i + 1];
             tempOperationArray.splice(i, 1);
             tempDigitsArray.splice(i + 1, 1);
+            i--;
         }
     } 
     for (let i = 0; i < tempOperationArray.length; i++) {
@@ -221,11 +225,15 @@ function calculate() {
             tempDigitsArray[i] += tempDigitsArray[i + 1];
             tempOperationArray.splice(i, 1);
             tempDigitsArray.splice(i + 1, 1);
+            i--;
         }
+    }
+    for (let i = 0; i < tempOperationArray.length; i++) {
         if (tempOperationArray[i] === '-') {
             tempDigitsArray[i] -= tempDigitsArray[i + 1];
             tempOperationArray.splice(i, 1);
             tempDigitsArray.splice(i + 1, 1);
+            i--;
         }
     } 
     return Math.round(tempDigitsArray[0] * CALC_ACCURACY) / CALC_ACCURACY;
