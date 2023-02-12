@@ -2,6 +2,7 @@ const keyboard = ['C', '<-', '/', '*', '-', '7', '8', '9', '+', '4', '5', '6', '
 const keysContainer = document.querySelector('.keyboard');
 const dispExpression = document.querySelector('.display-expression');
 const dispResult = document.querySelector('.display-result');
+const display = document.querySelector('.display');
 const CALC_ACCURACY = 10000000000;
 let numbersArray = [];
 let operationArray = [];
@@ -42,7 +43,7 @@ function input(e) {
         changeDotFlag();
     }
     else if(e.target.id === '=') {
-        calculate();
+        equals();
     }
     else {
         createNumbersArray(e.target.id);
@@ -50,6 +51,21 @@ function input(e) {
     displayResult(calculate());
 }
 
+function displayError() {
+    display.classList.add('error');
+}
+
+function equals() {
+    if (numbersArray.length > 0) {
+        let resultToArray = calculate();
+        clear();
+        numbersArray[0] = resultToArray;
+        dispExpression();
+    }
+    else {
+        displayError();
+    }
+}
 
 function createOperationArray(id) {
     if (numbersArray.length > 0 ) {
@@ -70,6 +86,9 @@ function createOperationArray(id) {
             dotFlag = false;
             displayExpression();
         }
+    }
+    else {
+        displayError();
     }
 }
 function createNumbersArray(id) {
@@ -145,6 +164,9 @@ function changeDotFlag() {
         dotFlag = true;
         numbersCounter = 1;
     }
+    else {
+        displayError();
+    }
     displayExpression();
     console.log('dotflag => '+ dotFlag);
 }
@@ -189,6 +211,9 @@ function remove() {
         console.log(operationArray);
         displayExpression();
     }
+    else {
+        displayError();
+    }
 }
 
 function plusMinus() {
@@ -198,6 +223,9 @@ function plusMinus() {
             numbersArray[operationCounter] *= -1;
         }
         displayExpression();
+    }
+    else {
+        displayError();
     }
 }
 
@@ -238,6 +266,7 @@ function calculate() {
 function removeAllTransition(e) {
     if (e.propertyName !== 'transform') return;
     this.classList.remove('key-click');
+    display.classList.remove('error');
 } 
 
 drawKeyboard();

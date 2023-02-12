@@ -45,7 +45,8 @@ h1 {
     margin: 10px;
     align-items: center;
     justify-content: space-between;
-    order: -1
+    order: -1;
+    transition: all .1s ease;
 }
 
 .display-expression, .display-result {
@@ -94,4 +95,10 @@ h1 {
 .key-click {
     transform: scale(.9);
     box-shadow: 0 0 5px #6e6e6e;
-  }
+}
+
+.error {
+    transform: scale(1.1);
+    box-shadow: 0 0 5px #e76f6f;
+    background-color: rgb(241, 179, 179);
+}
