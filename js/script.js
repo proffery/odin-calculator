@@ -17,7 +17,6 @@ function drawKeyboard() {
 function input(e) {
     const pressedKey = document.querySelector(`[id="${e.target.id}"]`);
     pressedKey.classList.add('key-click');
-    
     if(e.target.id === 'C') {
         clear();
     }
@@ -71,11 +70,9 @@ function createOperationArray(id) {
     if (numbersArray.length > 0 ) {
         if (operationArray.length < numbersArray.length) {
             operationArray[operationCounter] = id;
-            console.log(operationArray);
             operationCounter++;
             numbersCounter = 0;
             dotFlag = false;
-            console.log('iterOper:'+ operationCounter);
             displayExpression();
         }
         else {
@@ -117,12 +114,7 @@ function createNumbersArray(id) {
             }
         }
     }
-    
     displayExpression();
-    console.log(`digits input: ${id}`);
-    console.log('iterOper=:'+ operationCounter);
-    console.log('iterDigits='+ numbersCounter);
-    console.log(numbersArray);
     numbersCounter++;
 }     
 
@@ -145,8 +137,6 @@ function displayExpression() {
         }
     }
     dispExpression.textContent = expression;
-    console.log(numbersArray);
-    console.log(operationArray);
 }
 
 function displayResult(result) {
@@ -159,7 +149,6 @@ function displayResult(result) {
 }
 
 function changeDotFlag() {
-    console.log('dotFlag:');
     if (numbersArray[operationCounter] % 1 == 0 || numbersCounter == 0) {
         dotFlag = true;
         numbersCounter = 1;
@@ -168,32 +157,25 @@ function changeDotFlag() {
         displayError();
     }
     displayExpression();
-    console.log('dotflag => '+ dotFlag);
 }
 
 function clear() {
-    console.log('clear:');
     result = 0;
     operationCounter = 0;
     numbersCounter = 0;
     operationArray = [];
     numbersArray = [];
     dotFlag = false;
-    console.log('digitsArr: '+ numbersArray);
-    console.log('operationArray: '+ operationArray);
     displayExpression();
 }
 
 function remove() {
     if (numbersArray.length > 0) {
-        console.log('remove:');
         dotFlag = false;
         numbersCounter--;
         if (numbersArray.length > operationArray.length){
             let string = numbersArray[operationCounter].toString();
-            console.log(`${string}`);
             string = string.substring(0, string.length - 1);
-            console.log(`${string}`);
             numbersArray[operationCounter] = parseFloat(string);
             if (isNaN(numbersArray[operationCounter])) {
                 numbersCounter = 0;
@@ -207,8 +189,6 @@ function remove() {
             operationArray.pop();
             operationCounter--;
         }
-        console.log(numbersArray);
-        console.log(operationArray);
         displayExpression();
     }
     else {
@@ -218,7 +198,6 @@ function remove() {
 
 function plusMinus() {
     if (numbersArray.length > 0) {
-        console.log('plusMinus:');
         if (!isNaN(numbersArray[operationCounter])) {
             numbersArray[operationCounter] *= -1;
         }
@@ -243,8 +222,6 @@ function calculate() {
             tempOperationArray.splice(i, 1);
             tempDigitsArray.splice(i + 1, 1);
         }
-        console.log(tempDigitsArray);
-        console.log(tempOperationArray);
     } 
     for (let i = 0; i < tempOperationArray.length; i++) {
         if (tempOperationArray[i] === '+') {
@@ -257,8 +234,6 @@ function calculate() {
             tempOperationArray.splice(i, 1);
             tempDigitsArray.splice(i + 1, 1);
         }
-        console.log(tempDigitsArray);
-        console.log(tempOperationArray);
     } 
     return Math.round(tempDigitsArray[0] * CALC_ACCURACY) / CALC_ACCURACY;
 }
