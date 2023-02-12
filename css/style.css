@@ -16,7 +16,7 @@ h1 {
     align-items: center;
     align-self: center;
     justify-content: center;
-    font-size: 10px;
+    font-size: 15px;
 }
 
 .calc-container {
@@ -101,4 +101,7 @@ h1 {
     transform: scale(1.1);
     box-shadow: 0 0 5px #e76f6f;
     background-color: rgb(241, 179, 179);
+}
+.github-mark {
+    width: 15px;
 }
