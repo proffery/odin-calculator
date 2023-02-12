@@ -2,7 +2,6 @@ const keyboard = ['CE', '<-', '/', '*', '-', '7', '8', '9', '+', '4', '5', '6', 
 const keysContainer = document.querySelector('.keyboard');
 const displayExpression = document.querySelector('.display-expression');
 const displayResult = document.querySelector('.display-result');
-let result = 0;
 let digitsArray = [];
 let operationArray = [];
 let digitsIter = 0;
@@ -13,7 +12,7 @@ function drawKeyboard() {
     keysContainer.innerHTML = keyboard.map((key) => `<div class="key" id="${key}">${key}</div>`).join('');
 }
 
-function displayInput(e) {
+function input(e) {
     const pressedKey = document.querySelector(`[id="${e.target.id}"]`);
     pressedKey.classList.add('key-click');
     
@@ -47,7 +46,7 @@ function displayInput(e) {
     else {
         createDigitsArray(e.target.id);
     }
-    // calculate();
+    displayRes(calculate());
 }
 
 
@@ -95,6 +94,10 @@ function displayArrays() {
     displayExpression.textContent = expression;
     console.log(digitsArray);
     console.log(operationArray);
+}
+
+function displayRes(result) {
+    displayResult.textContent = result;
 }
 
 function createDigitsArray(id) {
@@ -196,27 +199,49 @@ function plusMinus() {
 }
 
 function calculate() {
-// if (operationArray.length == 0 || digitsArray.length < 2) {
-    //     return;
-    // }
+    let tempDigitsArray = Array.from(digitsArray);
+    let tempOperationArray = Array.from(operationArray);
+    if (tempDigitsArray.length <= 1) {
+        console.log(`Result: ${tempDigitsArray[0]}`)
+        return tempDigitsArray[0];
+    }
     
-    // else {
-    //     for (let i = 0; i < digitsArray.length; i++) {
-    //         if (operationArray[i] === '-') {
-    //             result = parseFloat(digitsArray[i]) - parseFloat(digitsArray[i + 1]);
-    //         }
-    //         if (operationArray[i] === '+') {
-    //             result = parseFloat(digitsArray[i]) + parseFloat(digitsArray[i + 1]);
-    //         }
-    //         if (operationArray[i] === '*') {
-    //             result = parseFloat(digitsArray[i]) * parseFloat(digitsArray[i + 1]);
-    //         }
-    //         if (operationArray[i] === '/') {
-    //             result = parseFloat(digitsArray[i]) / parseFloat(digitsArray[i + 1]);
-    //         }  
-    //     }
-    //}
-    // displayResult.textContent = result;
+    else {
+        while (tempDigitsArray.length > 1) {
+            if (tempOperationArray[0] === '*') {
+                tempDigitsArray[0] *= tempDigitsArray[1];
+                tempOperationArray.splice(0, 1);
+                tempDigitsArray.splice(1, 1);
+            }
+            else if (tempOperationArray[0] === '/') {
+                tempDigitsArray[0] /= tempDigitsArray[1];
+                tempOperationArray.splice(0, 1);
+                tempDigitsArray.splice(1, 1);
+            }
+            else if (tempOperationArray[0] === '+') {
+                tempDigitsArray[0] += tempDigitsArray[1];
+                tempOperationArray.splice(0, 1);
+                tempDigitsArray.splice(1, 1);
+            }
+            else {
+                tempDigitsArray[0] -= tempDigitsArray[1];
+                tempOperationArray.splice(0, 1);
+                tempDigitsArray.splice(1, 1);
+            }
+        } 
+            
+            // if (operationArray[i] === '/') {
+            //     result = parseFloat(digitsArray[i]) / parseFloat(digitsArray[i + 1]);
+            // }  
+            // if (operationArray[i] === '+') {
+            //     result = parseFloat(digitsArray[i]) + parseFloat(digitsArray[i + 1]);
+            // }
+            // if (operationArray[i] === '-') {
+            //     result = parseFloat(digitsArray[i]) - parseFloat(digitsArray[i + 1]);
+            // }
+    
+        return tempDigitsArray[0];
+    }
 }
                                         
 function removeAllTransition(e) {
@@ -226,5 +251,5 @@ function removeAllTransition(e) {
 
 drawKeyboard();
 const keys = document.querySelectorAll('.key');
-keys.forEach(key => key.addEventListener('click', displayInput));
+keys.forEach(key => key.addEventListener('click', input));
 keys.forEach(key => key.addEventListener('transitionend', removeAllTransition));
