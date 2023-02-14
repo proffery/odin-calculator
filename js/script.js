@@ -144,7 +144,7 @@ function inputKey(e) {
     else if(e.key === 'Backspace') {
         remove();
     }
-    // else if(e.target.id === '+/-') {
+    // else if(e.key === '+/-') {
     //     plusMinus();
     // }
     else if(e.key === '-') {
@@ -175,11 +175,21 @@ function displayError() {
     display.classList.add('error');
 }
 
+
 function equals() {
-    if (numbersArray.length > 0) {
+    const decimalCount = num => {
+    const numStr = String(num);
+    if (numStr.includes('.')) {
+        return numStr.split('.')[1].length;
+    };
+    return numStr.length;
+    }
+
+    if (numbersArray.length > 0 && numbersArray.length > operationArray.length) {
         let resultToArray = calculate();
         clear();
         numbersArray[0] = resultToArray;
+        numbersCounter = decimalCount(numbersArray[0]);
     }
     else {
         displayError();
@@ -276,7 +286,6 @@ function changeDotFlag() {
 }
 
 function clear() {
-    result = 0;
     operationCounter = 0;
     numbersCounter = 0;
     operationArray = [];
