@@ -1,7 +1,7 @@
 body {
     display: flex;
     flex-direction: column;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+    font-family:'Courier New', Courier, monospace;
     background-color:mintcream;
 } 
 
@@ -63,6 +63,7 @@ h1 {
 }
 
 .display-result {
+    font-weight: 900;
     font-size: larger;
 }
 
