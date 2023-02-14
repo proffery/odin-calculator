@@ -1,4 +1,81 @@
-const keyboard = ['C', '<-', '/', '*', '-', '7', '8', '9', '+', '4', '5', '6', '.', '1', '2', '3', '+/-', '0', '='];
+const keyboard = [
+    {
+        id: 'C',
+        keyCode: '27'
+    },
+    {
+        id: '<-', 
+        keyCode: '8'
+    },
+    {
+        id: '/', 
+        keyCode: '111'
+    },
+    {
+        id: '*', 
+        keyCode: '106'
+    },
+    {
+        id: '-',
+        keyCode: '109'
+    },
+    {
+        id: '7',
+        keyCode: '103'
+    },
+    {
+        id: '8',
+        keyCode: '104'
+    },
+    {
+        id: '9',
+        keyCode: '105'
+    },
+    {
+        id: '+',
+        keyCode: '107'
+    },
+    {
+        id: '4',
+        keyCode: '100'
+    },
+    {
+        id: '5',
+        keyCode: '101'
+    },
+    {
+        id: '6',
+        keyCode: '102'
+    },
+    {
+        id: '.',
+        keyCode: '110'
+    },
+    {
+        id: '1',
+        keyCode: '97'
+    },
+    {
+        id: '2',
+        keyCode: '98'
+    },
+    {
+        id: '3',
+        keyCode: '99'
+    },
+    {
+        id: '+/-',
+        keyCode: ''
+    },
+    {
+        id: '0',
+        keyCode: '96'
+    },
+    {
+        id: '=',
+        keyCode: '13'
+    },
+]
 const keysContainer = document.querySelector('.keyboard');
 const dispExpression = document.querySelector('.display-expression');
 const dispResult = document.querySelector('.display-result');
@@ -11,12 +88,19 @@ let operationCounter = 0;
 let dotFlag = false;
 
 function drawKeyboard() {
-    keysContainer.innerHTML = keyboard.map((key) => `<div class="key" id="${key}">${key}</div>`).join('');
+    for (let i = 0; i < keyboard.length; i++) {
+        let key = document.createElement('div');
+        key.id = (`${keyboard[i].id}`);
+        key.classList.add('key');
+        key.textContent = (`${keyboard[i].id}`);
+        key.setAttribute('data-key',`${keyboard[i].keyCode}`);
+        keysContainer.appendChild(key);
+    }
 }
 
-function input(e) {
-    const pressedKey = document.querySelector(`[id="${e.target.id}"]`);
-    pressedKey.classList.add('key-click');
+function inputClick(e) {
+        const pressedKeyClick = document.querySelector(`[id="${e.target.id}"]`);
+        pressedKeyClick.classList.add('key-click');
     if(e.target.id === 'C') {
         clear();
     }
@@ -51,6 +135,42 @@ function input(e) {
     displayResult(calculate());
 }
 
+function inputKey(e) {
+    const pressedKeyKeyboard = document.querySelector(`[data-key="${e.keyCode}"]`);
+    pressedKeyKeyboard.classList.add('key-click');
+    if(e.key === 'Escape') {
+        clear();
+    }
+    else if(e.key === 'Backspace') {
+        remove();
+    }
+    // else if(e.target.id === '+/-') {
+    //     plusMinus();
+    // }
+    else if(e.key === '-') {
+        createOperationArray(e.key);
+    }
+    else if(e.key === '+') {
+        createOperationArray(e.key);
+    }
+    else if(e.key === '*') {
+        createOperationArray(e.key);
+    }
+    else if(e.key === '/') {
+        createOperationArray(e.key);
+    }
+    else if(e.key === '.') {
+        changeDotFlag();
+    }
+    else if(e.key === 'Enter') {
+        equals();
+    }
+    else {
+        createNumbersArray(e.key);
+    }
+    displayExpression();
+    displayResult(calculate());
+}
 function displayError() {
     display.classList.add('error');
 }
@@ -247,5 +367,6 @@ function removeAllTransition(e) {
 
 drawKeyboard();
 const keys = document.querySelectorAll('.key');
-keys.forEach(key => key.addEventListener('click', input));
+keys.forEach(key => key.addEventListener('click', inputClick));
+window.addEventListener('keydown', inputKey);
 keys.forEach(key => key.addEventListener('transitionend', removeAllTransition));
